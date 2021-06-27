@@ -1,18 +1,17 @@
 import Head from 'next/head';
 import { useForm } from "react-hook-form";
 import axios from 'axios';
-import { string } from 'prop-types';
+import React, { useState, useEffect } from 'react';
+import TableResults from '../components/TableResults';
 
 
 export default function Home() {
+
+  //let data = [];
+  const [data, setData] = useState([]);
+
   const { register, handleSubmit, errors, reset } = useForm();
   
-  const TableRow = ({row}) => (
-    <tr>
-      {data.students.map(e=> <td>e</td>)}
-    </tr>
-  )
-
 
   async function onSubmitForm(values) {
     console.log(values);
@@ -36,8 +35,8 @@ export default function Home() {
     try {
       const response = await axios(config);
       console.log(response);
-      if (response.status == 200) {
-
+      if (response.status == 200) { 
+        setData(response.data);
       }
     } catch (err) { }
   }
@@ -70,13 +69,7 @@ export default function Home() {
 
       </form>
       <hr/>
-      <table>
-        <tr>
-          <th>Email</th>
-        </tr>
-        <TableRow row={} />
-      </table>
-
+      <TableResults info={data}/>
     </div>
   )
 }
